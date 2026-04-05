@@ -140,7 +140,7 @@ function InputScreen({ docText, setDocText, role, setRole, onAnalyze, error }) {
   return (
     <div className="input-screen">
       <div className="hero">
-        <h1 className="logo">Legible</h1>
+        <h1 className="logo">ClearSign</h1>
         <p className="tagline">Making legal documents human.</p>
       </div>
 
@@ -191,7 +191,7 @@ function ResultsScreen({ result, docText, onBack }) {
     <div className="results-screen">
       <div className="results-header">
         <button className="back-btn" onClick={onBack}>← Back</button>
-        <span className="results-title">Legible</span>
+        <span className="results-title">ClearSign</span>
         <span className="risk-badge" style={{ background: risk.bg, color: risk.color }}>
           {risk.label}
         </span>
