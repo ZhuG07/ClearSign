@@ -18,29 +18,31 @@ app.post("/api/claude", async (req, res) => {
   if (!prompt) return res.status(400).json({ error: "prompt is required" })
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "llama-3.3-70b-versatile",
         max_tokens: 1000,
-        system,
-        messages: [{ role: "user", content: prompt }],
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: prompt }
+        ],
       }),
     })
 
     const data = await response.json()
 
     if (!response.ok) {
-      console.error("Anthropic API error:", data)
+      console.error("Groq API error:", data)
       return res.status(response.status).json({ error: data })
     }
 
-    res.json(data)
+    const text = data.choices?.[0]?.message?.content ?? ""
+    res.json({ content: [{ text }] })
   } catch (err) {
     console.error("Server error:", err)
     res.status(500).json({ error: "Internal server error" })
